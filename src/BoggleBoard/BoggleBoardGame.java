@@ -17,21 +17,23 @@ public class BoggleBoardGame {
     public BoggleBoardGame(char[][] boggleBoard,Graph graph, ArrayList<String> words) {
         this.boggleBoard = boggleBoard;
         this.graph = graph;
-        int boggleRow = boggleBoard.length;
-        int boggleCol = boggleBoard[0].length;
         this.words = words;
-
+        addEdgeAdjacentPositions();
     }
 
-    public void addEdgeAdjacentPositions(int i, int j,int rowSize,int colSize, ArrayList<GraphNode>nodeList) {
-       
+    public void addEdgeAdjacentPositions() {
+       for (int i = 0; i < boggleBoard.length; i++) {
+        for (int j = 0; j < boggleBoard.length; j++) {
+            completeCellAdjacency(i, j);
+        }
+       }
     }
-    public void completeCellAdjacency(int i, int j, int rowSize,int colSize){
+    public void completeCellAdjacency(int i, int j){
         for (int k = 0; k < colPossibilities.length; k++) {
             if (isValidPosition(i + rowPossibilities[k], j + colPossibilities[k], boggleBoard.length,
                     boggleBoard[0].length)) {
                         graph.addUndirectedEdge(getColumnIndexOnList(i, j, boggleBoard[0].length), getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
-                System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
+                //System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
             }
         }
     }
@@ -46,4 +48,9 @@ public class BoggleBoardGame {
 
         return true;
     }
+
+    public Graph getGraph() {
+        return graph;
+    }
+    
 }
