@@ -8,54 +8,94 @@ public class Main {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
         char[][] boggleBoard = { { 'M', 'S', 'E' },
-                                { 'R', 'A', 'T' },
-                                { 'L', 'O', 'N' } };
+                { 'R', 'A', 'T' },
+                { 'L', 'O', 'N' } };
         int pos = 0;
         for (int i = 0; i < boggleBoard.length; i++) {
             for (int j = 0; j < boggleBoard[0].length; j++) {
-                pos = (i * boggleBoard[0].length) + j;
-                System.out.println(pos);
+                pos = getColumnIndexOnList(i, j, boggleBoard[0].length);
                 nodeList.add(new GraphNode(boggleBoard[i][j], pos));
             }
         }
+        for (int i = 0; i < boggleBoard.length; i++) {
+            for (int j = 0; j < boggleBoard[0].length; j++) {
+                int value = getColumnIndexOnList(i, j, boggleBoard[0].length);
+                System.out.println("Index on list: " + value);
+            }
+        }
 
-        Graph g = new Graph(nodeList);
-        g.addUndirectedEdge(0, 1);
-        g.addUndirectedEdge(0, 4);
-        g.addUndirectedEdge(0, 3);
+        int[] rowPossibilities = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        int[] colPossibilities = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-        g.addUndirectedEdge(1, 3);
-        g.addUndirectedEdge(1, 4);
-        g.addUndirectedEdge(1, 5);
-        g.addUndirectedEdge(1, 2);
+        for (int i = 0; i < boggleBoard.length; i++) {
+            for (int j = 0; j < boggleBoard[0].length; j++) {
+                for (int k = 0; k < colPossibilities.length; k++) {
+                    if (isValidPosition(i + rowPossibilities[k], j + colPossibilities[k], boggleBoard.length,
+                            boggleBoard[0].length)) {
+                        System.out.println("Adjacency with: " + boggleBoard[i][j] + " AND "
+                                + boggleBoard[i + rowPossibilities[k]][j + colPossibilities[k]]);
+                                int rowMove = i + rowPossibilities[k];
+                                int colMove = j + colPossibilities[k];
+                        System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i, j, i));
+                    }
+                }
 
-        g.addUndirectedEdge(2, 4);
-        g.addUndirectedEdge(2, 5);
+            }
+        }
 
-        g.addUndirectedEdge(3, 4);
-        g.addUndirectedEdge(3, 7);
-        g.addUndirectedEdge(3, 6);
+        // Graph g = new Graph(nodeList);
+        // g.addUndirectedEdge(0, 1);
+        // g.addUndirectedEdge(0, 4);
+        // g.addUndirectedEdge(0, 3);
+        //
+        // g.addUndirectedEdge(1, 3);
+        // g.addUndirectedEdge(1, 4);
+        // g.addUndirectedEdge(1, 5);
+        // g.addUndirectedEdge(1, 2);
+        //
+        // g.addUndirectedEdge(2, 4);
+        // g.addUndirectedEdge(2, 5);
+        //
+        // g.addUndirectedEdge(3, 4);
+        // g.addUndirectedEdge(3, 7);
+        // g.addUndirectedEdge(3, 6);
+        //
+        // g.addUndirectedEdge(4, 5);
+        // g.addUndirectedEdge(4, 8);
+        // g.addUndirectedEdge(4, 7);
+        // g.addUndirectedEdge(4, 6);
+        //
+        // g.addUndirectedEdge(5, 7);
+        // g.addUndirectedEdge(5, 8);
+        //
+        // g.addUndirectedEdge(6, 3);
+        // g.addUndirectedEdge(6, 7);
+        //
+        // g.addUndirectedEdge(7, 8);
+        //
+        //
+        //
+        //
+        // System.out.println(g);
+        // g.BFS(0);
+        // System.out.println(Arrays.deepToString(g.getPrevious()));
+        // System.out.println(Arrays.deepToString(g.getDistance()));
+        // System.out.println(Arrays.deepToString(g.getCor()));
+    }
 
-        g.addUndirectedEdge(4, 5);
-        g.addUndirectedEdge(4, 8);
-        g.addUndirectedEdge(4, 7);
-        g.addUndirectedEdge(4, 6);
+    public static int getColumnIndexOnList(int i, int j, int colSize) {
+        return (i * colSize) + j;
+    }
 
-        g.addUndirectedEdge(5, 7);
-        g.addUndirectedEdge(5, 8);
+    public static int getRowIndexOnList(int i, int j, int rowSize) {
+        return (i * rowSize) + j;
+    }
 
-        g.addUndirectedEdge(6, 3);
-        g.addUndirectedEdge(6, 7);
+    public static boolean isValidPosition(int i, int j, int rowSize, int columnSize) {
 
-        g.addUndirectedEdge(7, 8);
+        if (i < 0 || i > rowSize - 1 || j < 0 || j > columnSize - 1)
+            return false;
 
-      
-
-
-        System.out.println(g);
-        g.BFS(0);
-        System.out.println(Arrays.deepToString(g.getPrevious()));
-        System.out.println(Arrays.deepToString(g.getDistance()));
-        System.out.println(Arrays.deepToString(g.getCor()));
+        return true;
     }
 }

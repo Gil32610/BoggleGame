@@ -37,9 +37,7 @@ private Integer end[];
         adjacencyMatrix[j][i] = true;
     }
 
-    public void adjacentCellEdge(int i, int j, int cellRow, int cellCol){
 
-    }
 
     @Override
     public String toString(){
@@ -108,4 +106,9 @@ private Integer end[];
     public Integer[] getDistance() {
         return distance;
     }
+
+    public boolean[][] getAdjacencyMatrix() {
+        return adjacencyMatrix;
+    }
+    
 }
