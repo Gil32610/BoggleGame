@@ -36,7 +36,7 @@ public class Main {
                                 + boggleBoard[i + rowPossibilities[k]][j + colPossibilities[k]]);
                                 int rowMove = i + rowPossibilities[k];
                                 int colMove = j + colPossibilities[k];
-                        System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i, j, i));
+                        System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
                     }
                 }
 
@@ -85,10 +85,6 @@ public class Main {
 
     public static int getColumnIndexOnList(int i, int j, int colSize) {
         return (i * colSize) + j;
-    }
-
-    public static int getRowIndexOnList(int i, int j, int rowSize) {
-        return (i * rowSize) + j;
     }
 
     public static boolean isValidPosition(int i, int j, int rowSize, int columnSize) {

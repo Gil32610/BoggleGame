@@ -20,14 +20,23 @@ public class BoggleBoardGame {
         int boggleRow = boggleBoard.length;
         int boggleCol = boggleBoard[0].length;
         this.words = words;
-        
+
     }
 
     public void addEdgeAdjacentPositions(int i, int j,int rowSize,int colSize, ArrayList<GraphNode>nodeList) {
        
     }
     public void completeCellAdjacency(int i, int j, int rowSize,int colSize){
-       graph.getAdjacencyMatrix()[i][j] = true;
+        for (int k = 0; k < colPossibilities.length; k++) {
+            if (isValidPosition(i + rowPossibilities[k], j + colPossibilities[k], boggleBoard.length,
+                    boggleBoard[0].length)) {
+                        graph.addUndirectedEdge(getColumnIndexOnList(i, j, boggleBoard[0].length), getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
+                System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
+            }
+        }
+    }
+    public static int getColumnIndexOnList(int i, int j, int colSize) {
+        return (i * colSize) + j;
     }
 
     private boolean isValidPosition(int i, int j, int rowSize, int columnSize) {
