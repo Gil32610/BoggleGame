@@ -68,7 +68,6 @@ private Integer end[];
 
     public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
         int cont = 1; //posição da palavra para procurar
-        boolean foundl = false; //define se a letra existe
         boolean foundp = true; //define se a palavra toda existe
         for (int j = 0; j < nodeList.size(); j++) {
             
@@ -81,6 +80,8 @@ private Integer end[];
         fila.offer(s);
         while(!fila.isEmpty()){
             int u = fila.poll(); //tira da fila pra substituir pelos adjacentes (verificar se um dos adjacentes é o proximo char da palavra)
+            boolean foundl = false; //define se a letra existe entre a lista de adjacentes, e é reiniciado a cada nova letra
+            
             for (int i = 0; i < nodeList.size(); i++) {
 
                 if(adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO){
@@ -94,6 +95,7 @@ private Integer end[];
 
                 }
             }
+            
             if (!foundl) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
                 foundp = false;
             }

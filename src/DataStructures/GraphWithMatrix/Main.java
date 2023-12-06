@@ -9,9 +9,10 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
-        char[][] boggleBoard = {{ 'D', 'O', 'J' },
-                                { 'A', 'D', 'O' },
-                                { 'R', 'A', 'T' } };
+        char[][] boggleBoard = {{ 'D', 'O', 'J', 'M' },
+                                { 'A', 'D', 'O', 'E' },
+                                { 'R', 'A', 'T', 'L' },
+                                { 'B', 'F', 'N', 'A' }};
         
         int pos = 0;
         ArrayList<Character> charList = new ArrayList<>();
@@ -32,6 +33,9 @@ public class Main {
         words.add("DEDO");
         words.add("DADO");
         words.add("RATO"); //adição das palavras
+        words.add("MEU");
+        words.add("MEL");
+        words.add("MELA");
 
         Graph g  = new Graph(nodeList); //criação do grafo
 
