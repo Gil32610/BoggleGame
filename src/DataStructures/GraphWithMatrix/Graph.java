@@ -67,12 +67,13 @@ public class Graph {
     }
 
     public void initializeBfsContext(String word) {
+        currentCharacterSequence.clear();
         hasEnded = false;
-        BFS(0, word, word.charAt(0));
+        BFS(0, word, 0);
         System.out.println("Result");
     }
 
-    public void BFS(int s, String word, char contextChar) {
+    public void BFS(int s, String word, int contextChar) {
         if (!hasEnded) {
             Queue<Integer> queue = new LinkedList<Integer>();
             if (isCorrectWord(word, currentCharacterSequence)) {
@@ -93,32 +94,33 @@ public class Graph {
             distance[s] = 0;
             queue.offer(s);
             int index = 0;
-            boolean stackHaschanged;
-            while (!queue.isEmpty()) {
-                stackHaschanged = false;
+            boolean stackHaschanged = false;
+            while (!queue.isEmpty() && !hasEnded) {
+
                 int u = queue.poll();
                 for (int i = 0; i < nodeList.size(); i++) {
-                    if (adjacencyMatrix[u][i] && cor[i] == GraphNode.BRANCO) {
+                    if (adjacencyMatrix[u][i] && cor[i] == GraphNode.BRANCO &&
+                        nodeList.get(i).getLetter() == word.charAt(contextChar)) {
                         cor[i] = GraphNode.CINZA;
                         distance[i] = distance[u] + 1;
                         previous[i] = u;
-                        Character currentLetter = nodeList.get(i).getLetter();
-
-                        if (word.charAt(index) == currentLetter) {
-                            queue.offer(i);
-                        }
-                        if (!stackHaschanged) {
-                            currentCharacterSequence.add(currentLetter);
-                            stackHaschanged = true;
-                        }
+                        queue.offer(i);
+                        currentCharacterSequence.add(word.charAt(contextChar));
+                        stackHaschanged = true;
+                        BFS(i,word,contextChar+1);
+                    }
+                    if(!stackHaschanged){
+                        currentCharacterSequence.pop();
+                        return;
                     }
                 }
-                index++;
-                cor[u] = GraphNode.PRETO;
             }
-
+            index++;
+            cor[u] = GraphNode.PRETO;
         }
-        return;
+
+    }return;
+
     }
 
     public boolean hasLetterInNodeList(Character target) {
