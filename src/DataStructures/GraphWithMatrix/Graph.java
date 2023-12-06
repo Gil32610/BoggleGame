@@ -81,7 +81,6 @@ public class Graph {
                 hasEnded = true;
                 return;
             }
-
             // Iniciando variáveis auxiliares
             for (int j = 0; j < nodeList.size(); j++) {
 
@@ -98,7 +97,7 @@ public class Graph {
             while (!queue.isEmpty() && !hasEnded) {
 
                 int u = queue.poll();
-                for (int i = 0; i < nodeList.size(); i++) {
+                for (int i = 0; i < nodeList.size(); i++) { //Procurar caractere no contexto atual!
                     if (adjacencyMatrix[u][i] && cor[i] == GraphNode.BRANCO &&
                         nodeList.get(i).getLetter() == word.charAt(contextChar)) {
                         cor[i] = GraphNode.CINZA;
@@ -107,19 +106,17 @@ public class Graph {
                         queue.offer(i);
                         currentCharacterSequence.add(word.charAt(contextChar));
                         stackHaschanged = true;
-                        BFS(i,word,contextChar+1);
+                        BFS(i,word,contextChar+1); // mudança para o proximo contexto
                     }
-                    if(!stackHaschanged){
+                    if(!stackHaschanged){//Caracteres adjacentes não correspondem ao caractere alvo do contexto atual
                         currentCharacterSequence.pop();
                         return;
                     }
                 }
+                cor[u] = GraphNode.PRETO;
             }
-            index++;
-            cor[u] = GraphNode.PRETO;
+            
         }
-
-    }return;
 
     }
 
