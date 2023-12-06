@@ -2,6 +2,8 @@ package DataStructures.GraphWithMatrix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.SortedSet;
 
 import BoggleBoard.BoggleBoardGame;
 
@@ -27,36 +29,37 @@ public class Main {
                 nodeList.add(new GraphNode(boggleBoard[i][j], pos)); //adicionar a palavra com sua respectiva função   
             }
         }
-
+       
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
         words.add("DEDO");
         words.add("DADO");
-        words.add("RATO"); //adição das palavras
+        words.add("RATO"); 
 
         Graph g  = new Graph(nodeList); //criação do grafo
 
         BoggleBoardGame boggle = new BoggleBoardGame(boggleBoard, g, words); //inicialização do jogo
         
-        System.out.println(boggle.getGraph()); //mostra a matriz de adjacencia
+        boggle.checkResults();
+        // System.out.println(boggle.getGraph()); //mostra a matriz de adjacencia
 
-        boolean found = false;
-        for (int i = 0; i < words.size(); i++) {
-            String palavra = words.get(i); //palavra do momento
-            char letra = palavra.charAt(0); //pega a primeira letra
-            boolean existe = findWord(letra, boggleBoard); //verifica se a primeira letra existe na matriz
-            int start = findPos(letra, boggleBoard); //procura pela posição da primeira letra
+        // boolean found = false;
+        // for (int i = 0; i < words.size(); i++) {
+        //     String palavra = words.get(i); //palavra do momento
+        //     char letra = palavra.charAt(0); //pega a primeira letra
+        //     boolean existe = findWord(letra, boggleBoard); //verifica se a primeira letra existe na matriz
+        //     int start = findPos(letra, boggleBoard); //procura pela posição da primeira letra
 
-            if (existe) {
-                 found = g.BFS(start, palavra, charList); //além da posicação da primeira letra, passa a palavra e a lista feita a partir da matriz de caracteres
-            }
+        //     if (existe) {
+        //          found = g.BFS(start, palavra, charList); //além da posicação da primeira letra, passa a palavra e a lista feita a partir da matriz de caracteres
+        //     }
             
-            if (found) {
-                System.out.println("Palavra encontrada: " + palavra);
-            }
-            else {
-                System.out.println("Palavra NÃO encontrada: " + palavra);
-            }
-        }
+        //     if (found) {
+        //         System.out.println("Palavra encontrada: " + palavra);
+        //     }
+        //     else {
+        //         System.out.println("Palavra NÃO encontrada: " + palavra);
+        //     }
+        // }
         
     }
 
@@ -87,9 +90,9 @@ public class Main {
     public static int getColumnIndexOnList(int i, int j, int colSize) {
         return (i * colSize) + j;
     }
+    
 
     public static boolean isValidPosition(int i, int j, int rowSize, int columnSize) {
-
         if (i < 0 || i > rowSize - 1 || j < 0 || j > columnSize - 1)
             return false;
 
