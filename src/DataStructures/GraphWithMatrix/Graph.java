@@ -103,6 +103,22 @@ private Integer end[];
         return foundp; //
 
     }
+     public boolean hasLetterInNodeList(Character target){
+        for (int i = 0; i < nodeList.size(); i++) {
+            if(nodeList.get(i).getLetter().equals(target)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getIndexOfNodeLetter(Character target){
+            for (int i = 0; i < nodeList.size(); i++) {
+                if(nodeList.get(i).getLetter().equals(target))return i;
+            }
+            return -1;
+        
+    }
 
     public void startDFS(int s){
 
