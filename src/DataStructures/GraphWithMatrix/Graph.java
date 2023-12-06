@@ -68,8 +68,8 @@ private Integer end[];
 
     public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
         int cont = 1; //posição da palavra para procurar
-        boolean foundl = false;
-        boolean foundp = true;
+        boolean foundl = false; //define se a letra existe
+        boolean foundp = true; //define se a palavra toda existe
         for (int j = 0; j < nodeList.size(); j++) {
             
             cor[j] = GraphNode.BRANCO;
@@ -89,12 +89,12 @@ private Integer end[];
                     previous[i] = u;
                     fila.offer(i); //i vai virar u (node atual)
                     if (palavra.charAt(cont) == listachar.get(i)) {
-                        foundl = true; //ver pro caso dos adjs seguintes serem falsos (mas entao como reverter caso o proximo char n seja adj?
+                        foundl = true; 
                     }
 
                 }
             }
-            if (!foundl) {
+            if (!foundl) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
                 foundp = false;
             }
             cor[u] = GraphNode.PRETO;

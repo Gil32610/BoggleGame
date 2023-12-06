@@ -42,12 +42,12 @@ public class Main {
         boolean found = false;
         for (int i = 0; i < words.size(); i++) {
             String palavra = words.get(i); //palavra do momento
-            char letra = palavra.charAt(0);
-            boolean existe = findWord(letra, boggleBoard);
-            int start = findPos(letra, boggleBoard);
+            char letra = palavra.charAt(0); //pega a primeira letra
+            boolean existe = findWord(letra, boggleBoard); //verifica se a primeira letra existe na matriz
+            int start = findPos(letra, boggleBoard); //procura pela posição da primeira letra
 
             if (existe) {
-                 found = g.BFS(start, palavra, charList);
+                 found = g.BFS(start, palavra, charList); //além da posicação da primeira letra, passa a palavra e a lista feita a partir da matriz de caracteres
             }
             
             if (found) {
