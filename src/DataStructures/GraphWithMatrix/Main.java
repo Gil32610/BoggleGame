@@ -9,85 +9,79 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
-        char[][] boggleBoard = { { 'M', 'S', 'E' },
-                { 'R', 'A', 'T' },
-                { 'L', 'O', 'N' } };
+        char[][] boggleBoard = {{ 'D', 'O', 'J' },
+                                { 'A', 'D', 'O' },
+                                { 'R', 'A', 'T' } };
+        
         int pos = 0;
+        ArrayList<Character> charList = new ArrayList<>();
+        for (int i = 0; i < boggleBoard.length; i++) {
+            for (int j = 0; j < boggleBoard[0].length; j++) {
+                charList.add(boggleBoard[i][j]);
+            }
+        }
+        
         for (int i = 0; i < boggleBoard.length; i++) {
             for (int j = 0; j < boggleBoard[0].length; j++) {
                 pos = getColumnIndexOnList(i, j, boggleBoard[0].length);
-                nodeList.add(new GraphNode(boggleBoard[i][j], pos));
+                nodeList.add(new GraphNode(boggleBoard[i][j], pos)); //adicionar a palavra com sua respectiva função   
             }
         }
-        ArrayList<String> words = new ArrayList<>();
-        words.add("RAT");
-        Graph g  = new Graph(nodeList);
-        BoggleBoardGame boggle = new BoggleBoardGame(boggleBoard, g, words);
-        System.out.println(boggle.getGraph()); 
-        // for (int i = 0; i < boggleBoard.length; i++) {
-        //     for (int j = 0; j < boggleBoard[0].length; j++) {
-        //         int value = getColumnIndexOnList(i, j, boggleBoard[0].length);
-        //         System.out.println("Index on list: " + value);
-        //     }
-        // }
 
-        // int[] rowPossibilities = { -1, -1, -1, 0, 0, 1, 1, 1 };
-        // int[] colPossibilities = { -1, 0, 1, -1, 1, -1, 0, 1 };
+        ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
+        words.add("DEDO");
+        words.add("DADO");
+        words.add("RATO"); //adição das palavras
 
-        // for (int i = 0; i < boggleBoard.length; i++) {
-        //     for (int j = 0; j < boggleBoard[0].length; j++) {
-        //         for (int k = 0; k < colPossibilities.length; k++) {
-        //             if (isValidPosition(i + rowPossibilities[k], j + colPossibilities[k], boggleBoard.length,
-        //                     boggleBoard[0].length)) {
-        //                 System.out.println("Adjacency with: " + boggleBoard[i][j] + " AND "
-        //                         + boggleBoard[i + rowPossibilities[k]][j + colPossibilities[k]]);
-        //                         int rowMove = i + rowPossibilities[k];
-        //                         int colMove = j + colPossibilities[k];
-        //                 System.out.println(getColumnIndexOnList(i, j, boggleBoard[0].length)+ " "+ getColumnIndexOnList(i+rowPossibilities[k], j+colPossibilities[k], boggleBoard[0].length));
-        //             }
-        //         }
+        Graph g  = new Graph(nodeList); //criação do grafo
 
-        //     }
-        // }
+        BoggleBoardGame boggle = new BoggleBoardGame(boggleBoard, g, words); //inicialização do jogo
+        
+        System.out.println(boggle.getGraph()); //mostra a matriz de adjacencia
 
-        // Graph g = new Graph(nodeList);
-        // g.addUndirectedEdge(0, 1);
-        // g.addUndirectedEdge(0, 4);
-        // g.addUndirectedEdge(0, 3);
-        //
-        // g.addUndirectedEdge(1, 3);
-        // g.addUndirectedEdge(1, 4);
-        // g.addUndirectedEdge(1, 5);
-        // g.addUndirectedEdge(1, 2);
-        //
-        // g.addUndirectedEdge(2, 4);
-        // g.addUndirectedEdge(2, 5);
-        //
-        // g.addUndirectedEdge(3, 4);
-        // g.addUndirectedEdge(3, 7);
-        // g.addUndirectedEdge(3, 6);
-        //
-        // g.addUndirectedEdge(4, 5);
-        // g.addUndirectedEdge(4, 8);
-        // g.addUndirectedEdge(4, 7);
-        // g.addUndirectedEdge(4, 6);
-        //
-        // g.addUndirectedEdge(5, 7);
-        // g.addUndirectedEdge(5, 8);
-        //
-        // g.addUndirectedEdge(6, 3);
-        // g.addUndirectedEdge(6, 7);
-        //
-        // g.addUndirectedEdge(7, 8);
-        //
-        //
-        //
-        //
-        // System.out.println(g);
-        // g.BFS(0);
-        // System.out.println(Arrays.deepToString(g.getPrevious()));
-        // System.out.println(Arrays.deepToString(g.getDistance()));
-        // System.out.println(Arrays.deepToString(g.getCor()));
+        boolean found = false;
+        for (int i = 0; i < words.size(); i++) {
+            String palavra = words.get(i); //palavra do momento
+            char letra = palavra.charAt(0);
+            boolean existe = findWord(letra, boggleBoard);
+            int start = findPos(letra, boggleBoard);
+
+            if (existe) {
+                 found = g.BFS(start, palavra, charList);
+            }
+            
+            if (found) {
+                System.out.println("Palavra encontrada: " + palavra);
+            }
+            else {
+                System.out.println("Palavra NÃO encontrada: " + palavra);
+            }
+        }
+        
+    }
+
+    public static boolean findWord(char letra, char[][] boggleBoard) {
+        for (int i = 0; i < boggleBoard.length; i++) { //linhas
+            for (int j = 0; j < boggleBoard[i].length; j++) { //colunas
+                if (boggleBoard[i][j] == letra) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+        public static int findPos(char letra, char[][] boggleBoard) {
+            int cont = 0;
+            for (int i = 0; i < boggleBoard.length; i++) { //linhas
+                for (int j = 0; j < boggleBoard[i].length; j++) { //colunas
+                    if (boggleBoard[i][j] == letra) {
+                        return cont;
+                    }
+                    cont++;
+                }
+            }
+            return cont;
     }
 
     public static int getColumnIndexOnList(int i, int j, int colSize) {

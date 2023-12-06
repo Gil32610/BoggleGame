@@ -66,8 +66,12 @@ private Integer end[];
         return status?1:0;
     }
 
-    public void BFS(int s){
+    public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
+        int cont = 1; //posição da palavra para procurar
+        boolean foundl = false;
+        boolean foundp = true;
         for (int j = 0; j < nodeList.size(); j++) {
+            
             cor[j] = GraphNode.BRANCO;
             distance[j] = -1;
             previous[j] = null;
@@ -76,18 +80,27 @@ private Integer end[];
         distance[s] = 0;
         fila.offer(s);
         while(!fila.isEmpty()){
-            int u = fila.poll();
+            int u = fila.poll(); //tira da fila pra substituir pelos adjacentes (verificar se um dos adjacentes é o proximo char da palavra)
             for (int i = 0; i < nodeList.size(); i++) {
 
                 if(adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO){
                     cor[i] = GraphNode.CINZA;
                     distance[i]= distance[u]+1;
                     previous[i] = u;
-                    fila.offer(i);
+                    fila.offer(i); //i vai virar u (node atual)
+                    if (palavra.charAt(cont) == listachar.get(i)) {
+                        foundl = true; //ver pro caso dos adjs seguintes serem falsos (mas entao como reverter caso o proximo char n seja adj?
+                    }
+
                 }
             }
+            if (!foundl) {
+                foundp = false;
+            }
             cor[u] = GraphNode.PRETO;
+
         }
+        return foundp; //
 
     }
 
