@@ -77,10 +77,10 @@ private Integer end[];
     }
 
     public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
-        int cont = 1; //posição da palavra para procurar
-        Stack<Integer> charsIncluidos = new Stack<>();
+        int letterindex = 1; //posição da palavra para procurar
+        Stack<Integer> charsIncluded = new Stack<>();
         LinkedList<Integer> fila = new LinkedList<>();
-        boolean foundp = true; //define se a palavra toda existe
+        boolean foundWord = true; //define se a palavra toda existe
 
         for (int j = 0; j < nodeList.size(); j++) {
             cor[j] = GraphNode.BRANCO;
@@ -90,57 +90,55 @@ private Integer end[];
         cor[s] = GraphNode.CINZA;
         distance[s] = 0;
         fila.offer(s);
-        charsIncluidos.push(s);
+        charsIncluded.push(s);
 
         while(!fila.isEmpty()){
             int u = fila.poll(); //tira da fila pra substituir pelos adjacentes (verificar se um dos adjacentes é o proximo char da palavra)
-            boolean foundl = false; //define se a letra existe entre a lista de adjacentes, e é reiniciado a cada nova letra
+            boolean foundLetter = false; //define se a letra existe entre a lista de adjacentes, e é reiniciado a cada nova letra
             
             for (int i = 0; i < nodeList.size(); i++) {
 
-                if(cont < palavra.length() && adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO && palavra.charAt(cont) == listachar.get(i)){
+                if(letterindex < palavra.length() && adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO && palavra.charAt(letterindex) == listachar.get(i)){
                     distance[i]= distance[u]+1;
                     previous[i] = u;
-                    foundl = true; 
+                    foundLetter = true; 
                     fila.offer(i);
-                    charsIncluidos.add(i);
+                    charsIncluded.add(i);
                     cor[i] = GraphNode.CINZA;
-                    cont++;
-                    if (cont >= palavra.length()) {
-                        return foundp;
+                    letterindex++;
+                    if (letterindex >= palavra.length()) {
+                        return foundWord;
                     }
                     break;
                 }
             }
             
-            if (!foundl) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
-                charsIncluidos.pop(); //volta pro node anterior e repete a busca
-                if (charsIncluidos.isEmpty()) {
-                    //procurar outra primeira palavra, se não achar é falso
+            if (!foundLetter) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
+                charsIncluded.pop(); //volta pro node anterior e repete a busca
+                if (charsIncluded.isEmpty()) {
+                    //procurar outra primeira palavra, se não achar retorna falso
                     for (int i = s+1; i < listachar.size(); i++) {
                         if (listachar.get(i) == listachar.get(s)) {
                             fila.offer(i);
-                            charsIncluidos.push(i);
+                            charsIncluded.push(i);
                             s = i;
                             break;
                         }
                     }
                     if (fila.isEmpty()){
-                        foundp = false;
-                        return foundp;
+                        foundWord = false;
+                        return foundWord;
                     }
-                    
                 }
                 else {
-                    cont--;
-                    fila.offer(charsIncluidos.peek());
+                    letterindex--;
+                    fila.offer(charsIncluded.peek());
                 }
-                
             }
-            cor[u] = GraphNode.PRETO;
 
+            cor[u] = GraphNode.PRETO;
         }
-        return foundp; //
+        return foundWord; //
 
     }
 

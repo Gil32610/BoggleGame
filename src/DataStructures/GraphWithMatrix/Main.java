@@ -32,10 +32,9 @@ public class Main {
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
         words.add("DEDO");
         words.add("DADO");
-        words.add("JOTA");
+        words.add("LOTA");
         words.add("MEU");
         words.add("MEL");
-        words.add("MELO");
         words.add("DORME");
 
         Graph g  = new Graph(nodeList); //criação do grafo
