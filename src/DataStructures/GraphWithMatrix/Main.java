@@ -32,7 +32,6 @@ public class Main {
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
         words.add("DEDO");
         words.add("DADO");
-        // words.add("RAT"); //adição das palavras
         words.add("JOTA");
         words.add("MEU");
         words.add("MEL");

@@ -116,11 +116,26 @@ private Integer end[];
             if (!foundl) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
                 charsIncluidos.pop(); //volta pro node anterior e repete a busca
                 if (charsIncluidos.isEmpty()) {
-                    foundp = false;
-                    return foundp;
+                    //procurar outra primeira palavra, se não achar é falso
+                    for (int i = s+1; i < listachar.size(); i++) {
+                        if (listachar.get(i) == listachar.get(s)) {
+                            fila.offer(i);
+                            charsIncluidos.push(i);
+                            s = i;
+                            break;
+                        }
+                    }
+                    if (fila.isEmpty()){
+                        foundp = false;
+                        return foundp;
+                    }
+                    
                 }
-                cont--;
-                fila.offer(charsIncluidos.peek());
+                else {
+                    cont--;
+                    fila.offer(charsIncluidos.peek());
+                }
+                
             }
             cor[u] = GraphNode.PRETO;
 
