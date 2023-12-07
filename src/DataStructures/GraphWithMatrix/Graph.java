@@ -75,7 +75,7 @@ public class Graph {
     }
 
     public void BFS(int s, String word, int contextChar) {
-        if(contextChar>word.length()){
+        if (contextChar > word.length()) {
             return;
         }
         if (s >= nodeList.size()) {
@@ -101,33 +101,32 @@ public class Graph {
                             stackHaschanged = true;
                             currentCharacterSequence.add(word.charAt(contextChar));
                             BFS(i, word, contextChar + 1); // mudança para o proximo contexto
-                            stackHaschanged =false;
+                            stackHaschanged = false;
                         }
                     }
                 }
-                
+
                 if (currentCharacterSequence.isEmpty()) {
                     if (hasEnded) {
                         return;
                     }
-                        int nextChar = findNextUnvisitedNode(s, word.charAt(contextChar));
-                        if(nextChar!=-1){
-                            nodeList.get(nextChar).setVisited(true);
-                            currentCharacterSequence.add(nodeList.get(nextChar).getLetter());
-                            BFS(nextChar, word, contextChar+1);
-                        }
-                        return;
-                    
+                    int nextChar = findNextUnvisitedNode(s, word.charAt(contextChar));
+                    if (nextChar != -1) {
+                        nodeList.get(nextChar).setVisited(true);
+                        currentCharacterSequence.add(nodeList.get(nextChar).getLetter());
+                        BFS(nextChar, word, contextChar + 1);
+                    }
+                    return;
                 }
                 if (!stackHaschanged) {
                     currentCharacterSequence.pop();
                     if (hasEnded) {
                         return;
                     }
-                    if(currentCharacterSequence.isEmpty()){
-                        
-                        int nextLetter =findNextUnvisitedNode(s+1,word.charAt(contextChar-1));
-                        if(nextLetter!=-1){
+                    if (currentCharacterSequence.isEmpty()) {
+
+                        int nextLetter = findNextUnvisitedNode(s + 1, word.charAt(contextChar - 1));
+                        if (nextLetter != -1) {
                             nodeList.get(s).setVisited(false);
                             nodeList.get(nextLetter).setVisited(true);
                             currentCharacterSequence.add(nodeList.get(nextLetter).getLetter());
@@ -136,12 +135,10 @@ public class Graph {
                         hasEnded = true;
                         return;
                     }
-                    if(!currentCharacterSequence.isEmpty()){
+                    if (!currentCharacterSequence.isEmpty()) {
                         nodeList.get(s).setVisited(false);
                         return;
                     }
-                    
-                    
                     return;
                 }
             }
@@ -218,10 +215,10 @@ public class Graph {
         }
     }
 
-    public int findNextUnvisitedNode(int s, Character c){
+    public int findNextUnvisitedNode(int s, Character c) {
 
         for (int i = s; i < nodeList.size(); i++) {
-            if(!nodeList.get(i).getVisited() && nodeList.get(i).getLetter()==c){
+            if (!nodeList.get(i).getVisited() && nodeList.get(i).getLetter() == c) {
                 return i;
             }
         }
