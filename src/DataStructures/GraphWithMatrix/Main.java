@@ -31,7 +31,7 @@ public class Main {
         }
        
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
-        words.add("DEDO");
+        words.add("JOTA");
         words.add("DADO");
         words.add("RATO"); 
 

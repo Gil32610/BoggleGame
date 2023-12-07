@@ -68,52 +68,56 @@ public class Graph {
 
     public void initializeBfsContext(String word) {
         currentCharacterSequence.clear();
+        clearVisitedState();
         hasEnded = false;
         BFS(0, word, 0);
-        System.out.println("Result");
+        System.out.println(results);
     }
 
     public void BFS(int s, String word, int contextChar) {
-        if (!hasEnded) {
-            Queue<Integer> queue = new LinkedList<Integer>();
-            if (isCorrectWord(word, currentCharacterSequence)) {
+        if(s>= nodeList.size()){
+            return;
+        }
+        if (isCorrectWord(word, currentCharacterSequence)) {
+            
                 results.add(stackToString(currentCharacterSequence));
+                currentCharacterSequence.clear();
                 hasEnded = true;
                 return;
             }
-            // Iniciando variáveis auxiliares
-            for (int j = 0; j < nodeList.size(); j++) {
-
-                cor[j] = GraphNode.BRANCO;
-                distance[j] = -1;
-                previous[j] = null;
-            }
-
-            cor[s] = GraphNode.CINZA;
-            distance[s] = 0;
+        if (!hasEnded) {
+            Queue<Integer> queue = new LinkedList<Integer>();
             queue.offer(s);
-            int index = 0;
             boolean stackHaschanged = false;
             while (!queue.isEmpty() && !hasEnded) {
-
                 int u = queue.poll();
-                for (int i = 0; i < nodeList.size(); i++) { //Procurar caractere no contexto atual!
-                    if (adjacencyMatrix[u][i] && cor[i] == GraphNode.BRANCO &&
-                        nodeList.get(i).getLetter() == word.charAt(contextChar)) {
-                        cor[i] = GraphNode.CINZA;
-                        distance[i] = distance[u] + 1;
-                        previous[i] = u;
+                for (int i = 0; i < nodeList.size() && !hasEnded; i++) { //Procurar caractere no contexto atual!
+                    if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited() ) {
                         queue.offer(i);
-                        currentCharacterSequence.add(word.charAt(contextChar));
-                        stackHaschanged = true;
-                        BFS(i,word,contextChar+1); // mudança para o proximo contexto
+                        if(word.charAt(contextChar) == nodeList.get(i).getLetter()){
+                            nodeList.get(i).setVisited(true);
+                            stackHaschanged = true;
+                            currentCharacterSequence.add(word.charAt(contextChar));
+                            BFS(i,word,contextChar+1); // mudança para o proximo contexto
+                        }
                     }
-                    if(!stackHaschanged){//Caracteres adjacentes não correspondem ao caractere alvo do contexto atual
+                }
+                if(currentCharacterSequence.isEmpty()){
+                    if(hasEnded){
+                        return;
+                    }
+                    if(s<nodeList.size()){
+                        BFS(s+1, word, contextChar);
+                    }
+                }
+                if(!stackHaschanged){
+                    if(hasEnded){
+                        return;
+                    }
+                        if(nodeList.get(s).getVisited())nodeList.get(s).setVisited(false);
                         currentCharacterSequence.pop();
                         return;
                     }
-                }
-                cor[u] = GraphNode.PRETO;
             }
             
         }
@@ -158,24 +162,34 @@ public class Graph {
     }
 
     public boolean isCorrectWord(String word, Stack<Character> charSequence) {
+        Stack<Character> copy =(Stack<Character>)charSequence.clone();
         StringBuilder targetWord = new StringBuilder();
         for (int i = 0; i < charSequence.size(); i++) {
             if (!charSequence.isEmpty())
-                targetWord.append(charSequence.pop());
+                targetWord.append(copy.pop());
         }
+        targetWord = targetWord.reverse();
         String result = targetWord.toString();
         return word.equals(result);
 
     }
 
     public String stackToString(Stack<Character> charSequence) {
+        Stack<Character> copy =(Stack<Character>)charSequence.clone();
         StringBuilder targetWord = new StringBuilder();
         for (int i = 0; i < charSequence.size(); i++) {
             if (!charSequence.isEmpty())
-                targetWord.append(charSequence.pop());
+                targetWord.append(copy.pop());
         }
+        targetWord = targetWord.reverse();
         String result = targetWord.toString();
         return result;
+    }
+
+    public void clearVisitedState(){
+        for (int i = 0; i < nodeList.size(); i++) {
+            nodeList.get(i).setVisited(false);
+        }
     }
 
 }

@@ -57,7 +57,7 @@ public class BoggleBoardGame {
         for (int i = 0; i < words.size(); i++) {
             Character firstCharacter = words.get(i).charAt(0);
                 if (graph.hasLetterInNodeList(firstCharacter)) {
-                    graph.BFS(0, words.get(i));
+                    graph.initializeBfsContext(words.get(i));
                 }
         }
         
