@@ -9,10 +9,10 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
-        char[][] boggleBoard = {{ 'D', 'O', 'J', 'M' },
-                                { 'A', 'D', 'O', 'E' },
-                                { 'R', 'A', 'T', 'L' },
-                                { 'B', 'F', 'N', 'A' }};
+        char[][] boggleBoard = {{ 'D', 'O', 'J', 'O'},
+                                { 'A', 'D', 'O', 'L'},
+                                { 'R', 'A', 'T', 'E'},
+                                { 'D', 'O', 'R', 'M'}};
         
         int pos = 0;
         ArrayList<Character> charList = new ArrayList<>();
@@ -32,10 +32,12 @@ public class Main {
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
         words.add("DEDO");
         words.add("DADO");
-        words.add("RATO"); //adição das palavras
+        // words.add("RAT"); //adição das palavras
+        words.add("JOTA");
         words.add("MEU");
         words.add("MEL");
-        words.add("MELA");
+        words.add("MELO");
+        words.add("DORME");
 
         Graph g  = new Graph(nodeList); //criação do grafo
 
@@ -50,6 +52,7 @@ public class Main {
             boolean existe = findWord(letra, boggleBoard); //verifica se a primeira letra existe na matriz
             int start = findPos(letra, boggleBoard); //procura pela posição da primeira letra
 
+            // g.startBFS();
             if (existe) {
                  found = g.BFS(start, palavra, charList); //além da posicação da primeira letra, passa a palavra e a lista feita a partir da matriz de caracteres
             }

@@ -3,6 +3,7 @@ package DataStructures.GraphWithMatrix;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Graph {
 private ArrayList<GraphNode> nodeList;
@@ -66,11 +67,22 @@ private Integer end[];
         return status?1:0;
     }
 
-    public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
-        int cont = 1; //posição da palavra para procurar
-        boolean foundp = true; //define se a palavra toda existe
+    public void startBFS() {
         for (int j = 0; j < nodeList.size(); j++) {
             
+            cor[j] = GraphNode.BRANCO;
+            distance[j] = -1;
+            previous[j] = null;
+        }
+    }
+
+    public boolean BFS(int s, String palavra, ArrayList<Character> listachar){ //adiciona retorno booleana e parametro de palavra
+        int cont = 1; //posição da palavra para procurar
+        Stack<Integer> charsIncluidos = new Stack<>();
+        LinkedList<Integer> fila = new LinkedList<>();
+        boolean foundp = true; //define se a palavra toda existe
+
+        for (int j = 0; j < nodeList.size(); j++) {
             cor[j] = GraphNode.BRANCO;
             distance[j] = -1;
             previous[j] = null;
@@ -78,26 +90,37 @@ private Integer end[];
         cor[s] = GraphNode.CINZA;
         distance[s] = 0;
         fila.offer(s);
+        charsIncluidos.push(s);
+
         while(!fila.isEmpty()){
             int u = fila.poll(); //tira da fila pra substituir pelos adjacentes (verificar se um dos adjacentes é o proximo char da palavra)
             boolean foundl = false; //define se a letra existe entre a lista de adjacentes, e é reiniciado a cada nova letra
             
             for (int i = 0; i < nodeList.size(); i++) {
 
-                if(adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO){
-                    cor[i] = GraphNode.CINZA;
+                if(cont < palavra.length() && adjacencyMatrix[u][i] && cor[i]==GraphNode.BRANCO && palavra.charAt(cont) == listachar.get(i)){
                     distance[i]= distance[u]+1;
                     previous[i] = u;
-                    fila.offer(i); //i vai virar u (node atual)
-                    if (palavra.charAt(cont) == listachar.get(i)) {
-                        foundl = true; 
+                    foundl = true; 
+                    fila.offer(i);
+                    charsIncluidos.add(i);
+                    cor[i] = GraphNode.CINZA;
+                    cont++;
+                    if (cont >= palavra.length()) {
+                        return foundp;
                     }
-
+                    break;
                 }
             }
             
             if (!foundl) { //se depois de passar por todos os nodes adjacentes não encontrar a letra seguinte, a palavra nao existe
-                foundp = false;
+                charsIncluidos.pop(); //volta pro node anterior e repete a busca
+                if (charsIncluidos.isEmpty()) {
+                    foundp = false;
+                    return foundp;
+                }
+                cont--;
+                fila.offer(charsIncluidos.peek());
             }
             cor[u] = GraphNode.PRETO;
 
