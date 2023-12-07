@@ -75,6 +75,9 @@ public class Graph {
     }
 
     public void BFS(int s, String word, int contextChar) {
+        if(contextChar>word.length()){
+            return;
+        }
         if (s >= nodeList.size()) {
             return;
         }
@@ -98,23 +101,23 @@ public class Graph {
                             stackHaschanged = true;
                             currentCharacterSequence.add(word.charAt(contextChar));
                             BFS(i, word, contextChar + 1); // mudança para o proximo contexto
+                            stackHaschanged =false;
                         }
                     }
                 }
+                
                 if (currentCharacterSequence.isEmpty()) {
-                    
                     if (hasEnded) {
                         return;
                     }
-                    if (s < nodeList.size() && !stackHaschanged) {
                         int nextChar = findNextUnvisitedNode(s, word.charAt(contextChar));
-                        
                         if(nextChar!=-1){
                             nodeList.get(nextChar).setVisited(true);
+                            currentCharacterSequence.add(nodeList.get(nextChar).getLetter());
                             BFS(nextChar, word, contextChar+1);
                         }
                         return;
-                    }
+                    
                 }
                 if (!stackHaschanged) {
                     if (hasEnded) {
@@ -122,7 +125,11 @@ public class Graph {
                     }
                     if(!currentCharacterSequence.isEmpty()){
                         currentCharacterSequence.pop();
+                        nodeList.get(s).setVisited(false);
+                        return;
                     }
+                    
+                    
                     return;
                 }
             }
@@ -200,6 +207,7 @@ public class Graph {
     }
 
     public int findNextUnvisitedNode(int s, Character c){
+
         for (int i = s; i < nodeList.size(); i++) {
             if(!nodeList.get(i).getVisited() && nodeList.get(i).getLetter()==c){
                 return i;
