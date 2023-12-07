@@ -11,9 +11,9 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
-        char[][] boggleBoard = {{ 'D', 'O', 'J' },
-                                { 'A', 'D', 'O' },
-                                { 'R', 'A', 'T' } };
+        char[][] boggleBoard = {{ 'A', 'G', 'F','A','L', 'U' },
+                                { 'E', 'S', 'T','O','L', 'U' },
+                                { 'L', 'U', 'I','A', 'U', 'O'} };
         
         int pos = 0;
         ArrayList<Character> charList = new ArrayList<>();
@@ -31,8 +31,8 @@ public class Main {
         }
        
         ArrayList<String> words = new ArrayList<>(); //criação da lista de palavras que queremos encontrar
-        words.add("JOTA");
-        words.add("DADO");
+        words.add("LUTA");
+        words.add("TRUFA");
         words.add("RATO"); 
 
         Graph g  = new Graph(nodeList); //criação do grafo

@@ -75,51 +75,58 @@ public class Graph {
     }
 
     public void BFS(int s, String word, int contextChar) {
-        if(s>= nodeList.size()){
+        if (s >= nodeList.size()) {
             return;
         }
         if (isCorrectWord(word, currentCharacterSequence)) {
-            
-                results.add(stackToString(currentCharacterSequence));
-                currentCharacterSequence.clear();
-                hasEnded = true;
-                return;
-            }
+            results.add(stackToString(currentCharacterSequence));
+            currentCharacterSequence.clear();
+            hasEnded = true;
+            return;
+        }
         if (!hasEnded) {
             Queue<Integer> queue = new LinkedList<Integer>();
             queue.offer(s);
             boolean stackHaschanged = false;
             while (!queue.isEmpty() && !hasEnded) {
                 int u = queue.poll();
-                for (int i = 0; i < nodeList.size() && !hasEnded; i++) { //Procurar caractere no contexto atual!
-                    if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited() ) {
+                for (int i = 0; i < nodeList.size() && !hasEnded; i++) { // Procurar caractere no contexto atual!
+                    if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited()) {
                         queue.offer(i);
-                        if(word.charAt(contextChar) == nodeList.get(i).getLetter()){
+                        if (word.charAt(contextChar) == nodeList.get(i).getLetter()) {
                             nodeList.get(i).setVisited(true);
                             stackHaschanged = true;
                             currentCharacterSequence.add(word.charAt(contextChar));
-                            BFS(i,word,contextChar+1); // mudança para o proximo contexto
+                            BFS(i, word, contextChar + 1); // mudança para o proximo contexto
                         }
                     }
                 }
-                if(currentCharacterSequence.isEmpty()){
-                    if(hasEnded){
+                if (currentCharacterSequence.isEmpty()) {
+                    
+                    if (hasEnded) {
                         return;
                     }
-                    if(s<nodeList.size()){
-                        BFS(s+1, word, contextChar);
+                    if (s < nodeList.size() && !stackHaschanged) {
+                        int nextChar = findNextUnvisitedNode(s, word.charAt(contextChar));
+                        
+                        if(nextChar!=-1){
+                            nodeList.get(nextChar).setVisited(true);
+                            BFS(nextChar, word, contextChar+1);
+                        }
+                        return;
                     }
                 }
-                if(!stackHaschanged){
-                    if(hasEnded){
+                if (!stackHaschanged) {
+                    if (hasEnded) {
                         return;
                     }
-                        if(nodeList.get(s).getVisited())nodeList.get(s).setVisited(false);
+                    if(!currentCharacterSequence.isEmpty()){
                         currentCharacterSequence.pop();
-                        return;
                     }
+                    return;
+                }
             }
-            
+
         }
 
     }
@@ -162,7 +169,7 @@ public class Graph {
     }
 
     public boolean isCorrectWord(String word, Stack<Character> charSequence) {
-        Stack<Character> copy =(Stack<Character>)charSequence.clone();
+        Stack<Character> copy = (Stack<Character>) charSequence.clone();
         StringBuilder targetWord = new StringBuilder();
         for (int i = 0; i < charSequence.size(); i++) {
             if (!charSequence.isEmpty())
@@ -175,7 +182,7 @@ public class Graph {
     }
 
     public String stackToString(Stack<Character> charSequence) {
-        Stack<Character> copy =(Stack<Character>)charSequence.clone();
+        Stack<Character> copy = (Stack<Character>) charSequence.clone();
         StringBuilder targetWord = new StringBuilder();
         for (int i = 0; i < charSequence.size(); i++) {
             if (!charSequence.isEmpty())
@@ -186,10 +193,19 @@ public class Graph {
         return result;
     }
 
-    public void clearVisitedState(){
+    public void clearVisitedState() {
         for (int i = 0; i < nodeList.size(); i++) {
             nodeList.get(i).setVisited(false);
         }
+    }
+
+    public int findNextUnvisitedNode(int s, Character c){
+        for (int i = s; i < nodeList.size(); i++) {
+            if(!nodeList.get(i).getVisited() && nodeList.get(i).getLetter()==c){
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
