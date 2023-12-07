@@ -120,11 +120,23 @@ public class Graph {
                     
                 }
                 if (!stackHaschanged) {
+                    currentCharacterSequence.pop();
                     if (hasEnded) {
                         return;
                     }
+                    if(currentCharacterSequence.isEmpty()){
+                        
+                        int nextLetter =findNextUnvisitedNode(s+1,word.charAt(contextChar-1));
+                        if(nextLetter!=-1){
+                            nodeList.get(s).setVisited(false);
+                            nodeList.get(nextLetter).setVisited(true);
+                            currentCharacterSequence.add(nodeList.get(nextLetter).getLetter());
+                            BFS(nextLetter, word, contextChar);
+                        }
+                        hasEnded = true;
+                        return;
+                    }
                     if(!currentCharacterSequence.isEmpty()){
-                        currentCharacterSequence.pop();
                         nodeList.get(s).setVisited(false);
                         return;
                     }

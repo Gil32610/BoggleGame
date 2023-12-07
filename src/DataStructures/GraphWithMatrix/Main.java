@@ -34,7 +34,7 @@ public class Main {
         }
 
         ArrayList<String> words = new ArrayList<>(); // criação da lista de palavras que queremos encontrar
-        words.add("TIO");
+        words.add("FUI");
         words.add("LUIS");
         words.add("RATO");
 
