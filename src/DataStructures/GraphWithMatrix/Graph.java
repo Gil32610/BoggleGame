@@ -70,12 +70,12 @@ public class Graph {
         currentCharacterSequence.clear();
         clearVisitedState();
         hasEnded = false;
-        BFS(0, word, 0);
+        BFS(0, word);
         System.out.println(results);
     }
 
-    public void BFS(int s, String word, int contextChar) {
-        if (contextChar > word.length()) {
+    public void BFS(int s, String word) {
+        if (currentCharacterSequence.size() > word.length()) {
             return;
         }
         if (s >= nodeList.size()) {
@@ -96,50 +96,44 @@ public class Graph {
                 for (int i = 0; i < nodeList.size() && !hasEnded; i++) { // Procurar caractere no contexto atual!
                     if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited()) {
                         queue.offer(i);
-                        if (word.charAt(contextChar) == nodeList.get(i).getLetter()) {
+                        if (word.charAt(currentCharacterSequence.size()) == nodeList.get(i).getLetter()) {
                             nodeList.get(i).setVisited(true);
                             stackHaschanged = true;
-                            currentCharacterSequence.add(word.charAt(contextChar));
-                            BFS(i, word, contextChar + 1); // mudança para o proximo contexto
+                            currentCharacterSequence.add(word.charAt(currentCharacterSequence.size()));
+                            BFS(i, word); // mudança para o proximo contexto
                             stackHaschanged = false;
                         }
                     }
                 }
 
+                // Não houveram caracteres adicionados
                 if (currentCharacterSequence.isEmpty()) {
-                    if (hasEnded) {
-                        return;
-                    }
-                    int nextChar = findNextUnvisitedNode(s, word.charAt(contextChar));
-                    if (nextChar != -1) {
-                        nodeList.get(nextChar).setVisited(true);
-                        currentCharacterSequence.add(nodeList.get(nextChar).getLetter());
-                        BFS(nextChar, word, contextChar + 1);
-                    }
+                    handleEmptyStack(word, s);
                     return;
                 }
+                // Caractere atual não encontrado
                 if (!stackHaschanged) {
                     currentCharacterSequence.pop();
                     if (hasEnded) {
                         return;
                     }
+                    // Após a remoção pilha pode estar vazia
                     if (currentCharacterSequence.isEmpty()) {
 
-                        int nextLetter = findNextUnvisitedNode(s + 1, word.charAt(contextChar - 1));
+                        int nextLetter = findNextUnvisitedNode(s, word.charAt(currentCharacterSequence.size()));
                         if (nextLetter != -1) {
                             nodeList.get(s).setVisited(false);
                             nodeList.get(nextLetter).setVisited(true);
                             currentCharacterSequence.add(nodeList.get(nextLetter).getLetter());
-                            BFS(nextLetter, word, contextChar);
+                            BFS(nextLetter, word);
                         }
                         hasEnded = true;
                         return;
                     }
-                    if (!currentCharacterSequence.isEmpty()) {
-                        nodeList.get(s).setVisited(false);
-                        return;
-                    }
+                    //Retorna para o vértice anterior
+                    nodeList.get(s).setVisited(false);
                     return;
+
                 }
             }
 
@@ -223,6 +217,23 @@ public class Graph {
             }
         }
         return -1;
+    }
+
+    public void handleEmptyStack(String word, int start) {
+        if (hasEnded) {
+            return;
+        }
+        int nextChar = findNextUnvisitedNode(start, word.charAt(currentCharacterSequence.size()));
+        if (nextChar != -1) {
+            nodeList.get(nextChar).setVisited(true);
+            currentCharacterSequence.add(nodeList.get(nextChar).getLetter());
+            BFS(nextChar, word);
+        }
+
+    }
+
+    public void handleUnchangedStack(String word) {
+
     }
 
 }

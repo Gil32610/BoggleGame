@@ -11,10 +11,11 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> nodeList = new ArrayList<>();
 
-        char[][] boggleBoard = { { 'D', 'O', 'J', 'O' },
-                                 { 'A', 'D', 'O', 'L' },
-                                 { 'R', 'A', 'T', 'R' },
-                                 { 'D', 'O', 'O', 'M' }
+        char[][] boggleBoard = { { 'D', 'O', 'J', 'O','D' },
+                                 { 'A', 'D', 'O', 'E', 'Q' },
+                                 { 'R', 'A', 'T', 'R', 'P' },
+                                 { 'D', 'R', 'N', 'M', 'A' },
+                                 { 'P', 'E', 'X', 'R', 'O' }
 
         };
 
@@ -34,16 +35,17 @@ public class Main {
         }
 
         ArrayList<String> words = new ArrayList<>(); // criação da lista de palavras que queremos encontrar
-        words.add("DEDO");
+        words.add("PERNA");
         words.add("ADORO");
-        words.add("DATE");
+        words.add("MOTOR");
+        words.add("ARADO");
 
         Graph g = new Graph(nodeList); // criação do grafo
 
         BoggleBoardGame boggle = new BoggleBoardGame(boggleBoard, g, words); // inicialização do jogo
 
         System.out.println(g);
-         boggle.checkResults();
+        boggle.checkResults();
         // System.out.println(boggle.getGraph()); //mostra a matriz de adjacencia
 
         // boolean found = false;
