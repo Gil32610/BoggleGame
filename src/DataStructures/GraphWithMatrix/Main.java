@@ -37,7 +37,7 @@ public class Main {
         ArrayList<String> words = new ArrayList<>(); // criação da lista de palavras que queremos encontrar
         words.add("PERNA");
         words.add("ADORO");
-        words.add("MOTOR");
+        words.add("TODO");
         words.add("ARADO");
 
         Graph g = new Graph(nodeList); // criação do grafo

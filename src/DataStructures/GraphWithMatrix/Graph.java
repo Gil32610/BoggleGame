@@ -84,56 +84,48 @@ public class Graph {
         if (s >= nodeList.size()) {
             return;
         }
-        
-            Queue<Integer> queue = new LinkedList<Integer>();
-            queue.offer(s);
-            boolean stackHaschanged = false;
-            while (!queue.isEmpty() && !hasEnded) {
-                int u = queue.poll();
-                for (int i = 0; i < nodeList.size() && !hasEnded; i++) { // Procurar caractere no contexto atual!
-                    if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited()) {
-                        queue.offer(i);
-                        if (word.charAt(currentCharacterSequence.size()) == nodeList.get(i).getLetter()) {
-                            nodeList.get(i).setVisited(true);
-                            stackHaschanged = true;
-                            currentCharacterSequence.add(word.charAt(currentCharacterSequence.size()));
-                            BFS(i, word); // mudança para o proximo contexto
-                            stackHaschanged = false;
-                        }
-                    }
-                }
-                // Não houveram caracteres adicionados
-                if (currentCharacterSequence.isEmpty()) {
-                    handleEmptyStack(word, s);
-                    return;
-                }
-                // Caractere atual não encontrado
-                if (!stackHaschanged) {
-                    currentCharacterSequence.pop();
-                    if (hasEnded) {
-                        return;
-                    }
-                    // Após a remoção pilha pode estar vazia
-                    if (currentCharacterSequence.isEmpty()) {
-
-                        int nextLetter = findNextUnvisitedNode(s, word.charAt(currentCharacterSequence.size()));
-                        if (nextLetter != -1) {
-                            nodeList.get(s).setVisited(false);
-                            nodeList.get(nextLetter).setVisited(true);
-                            currentCharacterSequence.add(nodeList.get(nextLetter).getLetter());
-                            BFS(nextLetter, word);
-                        }
-                        hasEnded = true;
-                        return;
-                    }
-                    //Retorna para o vértice anterior
-                    nodeList.get(s).setVisited(false);
-                    return;
-
+        boolean stackHaschanged = false;
+        int u = s;
+        for (int i = 0; i < nodeList.size() && !hasEnded; i++) { // Procurar caractere no contexto atual!
+            if (adjacencyMatrix[u][i] && !nodeList.get(i).getVisited()) {
+                if (word.charAt(currentCharacterSequence.size()) == nodeList.get(i).getLetter()) {
+                    nodeList.get(i).setVisited(true);
+                    stackHaschanged = true;
+                    currentCharacterSequence.add(word.charAt(currentCharacterSequence.size()));
+                    BFS(i, word); // mudança para o proximo contexto
+                    stackHaschanged = false;
                 }
             }
+        }
+        // Não houveram caracteres adicionados
+        if (currentCharacterSequence.isEmpty()) {
+            handleEmptyStack(word, s);
+            return;
+        }
+        // Caractere atual não encontrado
+        if (!stackHaschanged) {
+            currentCharacterSequence.pop();
+            if (hasEnded) {
+                return;
+            }
+            // Após a remoção pilha pode estar vazia
+            if (currentCharacterSequence.isEmpty()) {
 
-        
+                int nextLetter = findNextUnvisitedNode(s, word.charAt(currentCharacterSequence.size()));
+                if (nextLetter != -1) {
+                    nodeList.get(s).setVisited(false);
+                    nodeList.get(nextLetter).setVisited(true);
+                    currentCharacterSequence.add(nodeList.get(nextLetter).getLetter());
+                    BFS(nextLetter, word);
+                }
+                hasEnded = true;
+                return;
+            }
+            // Retorna para o vértice anterior
+            nodeList.get(s).setVisited(false);
+            return;
+
+        }
 
     }
 
