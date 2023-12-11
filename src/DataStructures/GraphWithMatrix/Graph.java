@@ -75,19 +75,16 @@ public class Graph {
     }
 
     public void BFS(int s, String word) {
-        if (currentCharacterSequence.size() > word.length()) {
+        if (currentCharacterSequence.size() >= word.length()) {
+            results.add(stackToString(currentCharacterSequence));
+            hasEnded = true;
+            currentCharacterSequence.clear();
             return;
         }
         if (s >= nodeList.size()) {
             return;
         }
-        if (isCorrectWord(word, currentCharacterSequence)) {
-            results.add(stackToString(currentCharacterSequence));
-            currentCharacterSequence.clear();
-            hasEnded = true;
-            return;
-        }
-        if (!hasEnded) {
+        
             Queue<Integer> queue = new LinkedList<Integer>();
             queue.offer(s);
             boolean stackHaschanged = false;
@@ -105,7 +102,6 @@ public class Graph {
                         }
                     }
                 }
-
                 // Não houveram caracteres adicionados
                 if (currentCharacterSequence.isEmpty()) {
                     handleEmptyStack(word, s);
@@ -137,7 +133,7 @@ public class Graph {
                 }
             }
 
-        }
+        
 
     }
 
